@@ -2,7 +2,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 -- Events
 
-RegisterServerEvent('ob-crypto:server:ExchangeFail', function()
+RegisterServerEvent('mp-crypto:server:ExchangeFail', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local ItemData = Player.Functions.GetItemByName("cryptostick")
@@ -14,21 +14,21 @@ RegisterServerEvent('ob-crypto:server:ExchangeFail', function()
     end
 end)
 
-RegisterServerEvent('ob-crypto:server:Rebooting', function(state, percentage)
+RegisterServerEvent('mp-crypto:server:Rebooting', function(state, percentage)
     Config.Exchange.RebootInfo.state = state
     Config.Exchange.RebootInfo.percentage = percentage
 end)
 
-RegisterServerEvent('ob-crypto:server:GetRebootState', function()
+RegisterServerEvent('mp-crypto:server:GetRebootState', function()
     local src = source
-    TriggerClientEvent('qb-crypto:client:GetRebootState', src, Config.Exchange.RebootInfo)
+    TriggerClientEvent('mp-crypto:client:GetRebootState', src, Config.Exchange.RebootInfo)
 end)
 
-RegisterServerEvent('ob-crypto:server:SyncReboot', function()
-    TriggerClientEvent('qb-crypto:client:SyncReboot', -1)
+RegisterServerEvent('mp-crypto:server:SyncReboot', function()
+    TriggerClientEvent('mp-crypto:client:SyncReboot', -1)
 end)
 
-RegisterServerEvent('ob-crypto:server:ExchangeSuccess', function(LuckChance)
+RegisterServerEvent('mp-crypto:server:ExchangeSuccess', function(LuckChance)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local ItemData = Player.Functions.GetItemByName("cryptostick")
