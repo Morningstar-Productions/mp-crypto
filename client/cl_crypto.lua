@@ -3,7 +3,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 -- Functions
 
 local function ExchangeSuccess()
-	TriggerServerEvent('ob-crypto:server:ExchangeSuccess', math.random(1, 10))
+	TriggerServerEvent('mp-crypto:server:ExchangeSuccess', math.random(1, 10))
 end
 
 local function ExchangeFail()
@@ -11,8 +11,8 @@ local function ExchangeFail()
 	local RemoveChance = math.random(1, Odd)
 	local LosingNumber = math.random(1, Odd)
 	if RemoveChance == LosingNumber then
-		TriggerServerEvent('ob-crypto:server:ExchangeFail')
-		TriggerServerEvent('ob-crypto:server:SyncReboot')
+		TriggerServerEvent('mp-crypto:server:ExchangeFail')
+		TriggerServerEvent('mp-crypto:server:SyncReboot')
 	end
 end
 
@@ -21,11 +21,11 @@ local function SystemCrashCooldown()
 		while Config.Exchange.RebootInfo.state do
 			if (Config.Exchange.RebootInfo.percentage + 1) <= 100 then
 				Config.Exchange.RebootInfo.percentage = Config.Exchange.RebootInfo.percentage + 1
-				TriggerServerEvent('ob-crypto:server:Rebooting', true, Config.Exchange.RebootInfo.percentage)
+				TriggerServerEvent('mp-crypto:server:Rebooting', true, Config.Exchange.RebootInfo.percentage)
 			else
 				Config.Exchange.RebootInfo.percentage = 0
 				Config.Exchange.RebootInfo.state = false
-				TriggerServerEvent('ob-crypto:server:Rebooting', false, 0)
+				TriggerServerEvent('mp-crypto:server:Rebooting', false, 0)
 			end
 			Wait(1200)
 		end
@@ -34,7 +34,7 @@ end
 
 -- Events
 
-RegisterNetEvent("ob-crypto:ConnectUSB", function()
+RegisterNetEvent("mp-crypto:ConnectUSB", function()
     if QBCore.Functions.HasItem('cryptostick', 1) then
         if lib.progressCircle({
             duration = 5000,
@@ -90,10 +90,10 @@ RegisterNetEvent("ob-crypto:ConnectUSB", function()
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-	TriggerServerEvent('ob-crypto:server:GetRebootState')
+	TriggerServerEvent('mp-crypto:server:GetRebootState')
 end)
 
-RegisterNetEvent('ob-crypto:client:GetRebootState', function(RebootInfo)
+RegisterNetEvent('mp-crypto:client:GetRebootState', function(RebootInfo)
 	if RebootInfo.state then
 		Config.Exchange.RebootInfo.state = RebootInfo.state
 		Config.Exchange.RebootInfo.percentage = RebootInfo.percentage
@@ -104,7 +104,7 @@ end)
 -- Target Thread
 
 CreateThread(function()
-    exports['qb-target']:AddBoxZone("Crypto-Exchange", vector3(1276.21, -1709.88, 54.57), 1.0, 1.0, {
+    exports['qb-target']:AddBoxZone("Crypto-Exchange", vector3(1276.21, -1709.88, 53.57), 1.0, 1.0, {
         name = "Crypto-Exchange",
         debugPoly = Config.Debug,
         minZ = 53.57,
