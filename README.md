@@ -1,3 +1,6 @@
+<div align='center'><h1><a href='https://xviperag.gitbook.io/morningstar-development/free-releases/crypto'>Documentation</a></h3></div>
+<br>
+
 # mp-crypto
 Crypto Script for QBCore (Updated with Target)
 
