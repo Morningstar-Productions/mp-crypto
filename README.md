@@ -4,6 +4,10 @@
 # mp-crypto
 Crypto Script for QBCore (Updated with Target)
 
+## Discord
+
+Join the Discord here! https://discord.gg/3CXrkvQVds
+
 ## TO DO:
 
 * Figure out Check for Cooldown State
