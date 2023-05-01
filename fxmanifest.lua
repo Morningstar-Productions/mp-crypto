@@ -1,9 +1,10 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description ''
-author ''
-version '0.0.0'
+name 'mp-crypto'
+description 'Configurable Crypto Minigame Script to gain cryptocurrency'
+author 'xViperAG'
+version '1.0.0'
 
 client_scripts {
     '@PolyZone/client.lua',
@@ -23,7 +24,7 @@ shared_scripts {
     'locales/en.lua',
     'locales/*.lua',
     'shared/**/*',
-    '@ox_lib/init.lua'
+    --'@ox_lib/init.lua' --UNCOMMENT IF USING OX_LIB
 }
 
 lua54 'yes'

@@ -2,42 +2,67 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 -- Events
 
-RegisterServerEvent('mp-crypto:server:ExchangeFail', function()
+RegisterServerEvent('mp-crypto:ExchangeFail', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    local ItemData = Player.Functions.GetItemByName("cryptostick")
 
-    if ItemData ~= nil then
-        Player.Functions.RemoveItem("cryptostick", 1)
-        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["cryptostick"], "remove")
-        TriggerClientEvent('QBCore:Notify', src, Lang:t('error.cryptostick_malfunctioned'), 'error')
+    if not Player then return end
+
+    if Config.Inventory.QB then
+        if Player.Functions.GetItemByName("cryptostick") then
+            Player.Functions.RemoveItem("cryptostick", 1)
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["cryptostick"], "remove")
+            TriggerClientEvent('QBCore:Notify', src, Lang:t('error.cryptostick_malfunctioned'), 'error')
+        end
+    elseif Config.Inventory.Ox then
+        local cryptostick = exports.ox_inventory:GetItem(src, 'cryptostick', nil, false)
+        if cryptostick then
+            exports.ox_inventory:RemoveItem(src, 'cryptostick', 1)
+            TriggerClientEvent('QBCore:Notify', src, Lang:t('error.cryptostick_malfunctioned'), 'error')
+        end
     end
 end)
 
-RegisterServerEvent('mp-crypto:server:Rebooting', function(state, percentage)
+RegisterServerEvent('mp-crypto:Rebooting', function(state, percentage)
     Config.Exchange.RebootInfo.state = state
     Config.Exchange.RebootInfo.percentage = percentage
 end)
 
-RegisterServerEvent('mp-crypto:server:GetRebootState', function()
+RegisterServerEvent('mp-crypto:GetRebootState', function()
     local src = source
-    TriggerClientEvent('mp-crypto:client:GetRebootState', src, Config.Exchange.RebootInfo)
+    TriggerClientEvent('mp-crypto:GetRebootState', src, Config.Exchange.RebootInfo)
 end)
 
-RegisterServerEvent('mp-crypto:server:SyncReboot', function()
-    TriggerClientEvent('mp-crypto:client:SyncReboot', -1)
-end)
-
-RegisterServerEvent('mp-crypto:server:ExchangeSuccess', function(LuckChance)
+RegisterServerEvent('mp-crypto:ExchangeSuccess', function(LuckChance)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    local ItemData = Player.Functions.GetItemByName("cryptostick")
+    local amount = math.random(1, 25)
 
-    if ItemData ~= nil then
-        local Amount = math.random(1, 25)
-        Player.Functions.RemoveItem("cryptostick", 1)
-        exports['qb-phone']:AddCrypto(src, "gne", Amount)
-        TriggerClientEvent('QBCore:Notify', src, Lang:t('success.you_have_exchanged_your_cryptostick_for',{amount = Amount}), "success", 3500)
-        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["cryptostick"], "remove")
+    if not Player then return end
+
+    if Config.Inventory.QB then
+        if Player.Functions.GetItemByName("cryptostick") then
+            Player.Functions.RemoveItem("cryptostick", 1)
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["cryptostick"], "remove")
+        end
+    elseif Config.Inventory.Ox then
+        local cryptostick = exports.ox_inventory:GetItem(src, 'cryptostick', nil, false)
+        if cryptostick then
+            exports.ox_inventory:RemoveItem(src, 'cryptostick', 1)
+        end
+    end
+
+    if Config.Crypto.Renewed then
+        exports['qb-phone']:AddCrypto(src, "gne", amount)
+        TriggerClientEvent('qb-phone:client:CustomNotification', src,
+            "CRYPTOMINER",
+            Lang:t('success.you_have_exchanged_your_cryptostick_for',{amount = amount}),
+            "fas fa-coins",
+            "#FFFFFF",
+            7500
+        )
+    elseif Config.Crypto.QBCore then
+        Player.Functions.AddMoney('crypto', amount, 'crypto-exchange')
+        TriggerClientEvent('QBCore:Notify', src, Lang:t('success.you_have_exchanged_your_cryptostick_for',{amount = amount}), "success", 3500)
     end
 end)
