@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 name 'mp-crypto'
-description 'Configurable Crypto Minigame Script to gain cryptocurrency'
+description 'Configurable Crypto Script for QBCore'
 author 'xViperAG'
 version '1.0.0'
 
